@@ -1458,4 +1458,4 @@
 }
 .folder-dots .dot.active {
   background: color-mix(in srgb, var(--c-home-label, #ffffff) 85%, transparent);
-}
+    }
