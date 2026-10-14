@@ -1084,8 +1084,8 @@
   }
 
   :root {
-    --phone-screen-width: 100vw;
-    --phone-screen-height: 100lvh;
+    --phone-screen-width: calc(100vw / var(--shell-zoom, 1));
+    --phone-screen-height: calc(100lvh / var(--shell-zoom, 1));
   }
 
   html,
@@ -1118,13 +1118,14 @@
     margin-inline: 0;
     gap: 0;
     transform-origin: top left;
+    zoom: var(--shell-zoom, 1);
     /* 状态栏占位上移：部分安卓浏览器不允许网页绘制到真实状态栏，视口从状态栏下方开始；
        而缩放仍按完整屏高算，844 设计稿被拉成整屏高、却只能从状态栏下方画起，底部被切。
        用负上边距把整块画面上移 --status-bar-drop 像素：顶部那段（虚拟状态栏区域）超出
        .app-root 被裁掉，底部栏随之顶回可视区。上移量可在「状态栏」弹窗里按设备调节，
        让它约等于真实状态栏高度即可铺满。0 = 不上移（iOS 等能全屏的浏览器保持 0）。 */
-    margin-top: calc(-1 * var(--status-bar-drop, 0px));
-    transform: translate3d(0, calc(-1 * var(--mobile-keyboard-lift, 0px)), 0);
+    margin-top: calc(-1 * var(--status-bar-drop, 0px) / var(--shell-zoom, 1));
+    transform: translate3d(0, calc(-1 * var(--mobile-keyboard-lift, 0px) / var(--shell-zoom, 1)), 0);
     /* 移除 transform 过渡动画：Android 键盘弹出后该过渡会让 .phone-shell-wrap 在
        点击交互期间持续移动（pointerdown→pointerup 间按钮被顶走数十像素），导致
        Chrome 判断 pointerdown 与 pointerup 命中不同元素、click 落到 app-root 而
